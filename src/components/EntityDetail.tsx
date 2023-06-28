@@ -8,6 +8,9 @@ import { fetchEntity } from '../store/reducers/entitySlice';
 import { useLocation } from 'react-router-dom'
 import LoadingComponent from './LoadingComponent';
 import { Typography, Box, List, ListItem, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
+import { type } from 'os';
+import { incrementPopularItem } from '../store/reducers/popularSlice';
+
 
 
 
@@ -18,7 +21,7 @@ const ArrayLink = ({ value, name }: any) => {
   return (
     <div style={{ display: 'grid' }}>
       {value.map((iter: any, idx: number) => (
-        <Link to={`/${iter.substring(iter.indexOf('api/') + 4)}`} >
+        <Link key={idx} to={`/${iter.substring(iter.indexOf('api/') + 4)}`} >
           <Typography component="b" variant="body1" style={{ textTransform: 'capitalize' }}>
             {name} {idx + 1}
           </Typography>
@@ -41,7 +44,15 @@ const EntityDetail: React.FC = () => {
     dispatch(fetchEntity(location.pathname));
   }, [location.pathname]);
 
-
+  useEffect(() => {
+    const tempItem = {
+      name: selected ? ('title' in selected ? selected.title : selected.name) : '',
+      type: location.pathname.substring(1, location.pathname.indexOf('/', 1)),
+      url: location.pathname,
+      count: 1
+    }
+    selected && dispatch(incrementPopularItem(tempItem))
+  }, [selected]);
 
   return (
     <Box justifyContent="center" alignItems="center" minHeight="100vh">
@@ -52,9 +63,6 @@ const EntityDetail: React.FC = () => {
         <>
           <TableContainer component={Paper} style={{ padding: '1rem' }}>
             <Table>
-              <TableHead>
-
-              </TableHead>
               <TableBody>
                 {arrValues.map((value: any, idx: number) => (
                   <TableRow key={idx}>
@@ -62,12 +70,10 @@ const EntityDetail: React.FC = () => {
                       {value[0].replace(/_/g, ' ')} :
                     </TableCell>
                     <TableCell>
-                      <ArrayLink value={value[1]} name={value[0]} />
+                      <ArrayLink key={idx} value={value[1]} name={value[0]} />
                     </TableCell>
                   </TableRow>
                 ))}
-
-
               </TableBody>
             </Table>
           </TableContainer>

@@ -6,6 +6,7 @@ import EntityList from './EntityList';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Navigation from './Navigation';
 import EntityDetail from './EntityDetail';
+import PopularList from './PopularList';
 
 const Main: React.FC = () => {
     const entities = useSelector((state: RootState) => state.entities);
@@ -27,6 +28,7 @@ const Main: React.FC = () => {
                     <Route path="/species/:id" element={<EntityDetail />} />
                     <Route path="/planets" element={<EntityList />} />
                     <Route path="/planets/:id" element={<EntityDetail />} />
+                    <Route path="/popular" element={<PopularList />} />
                 </Routes>
             </BrowserRouter>
         </div>

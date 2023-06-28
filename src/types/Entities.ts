@@ -105,9 +105,7 @@ export interface Result {
 
 export interface EntitiesState {
   result?: Result;
-  page: number;
   loading: boolean;
   error: string | null;
-  searchTerm: string;
   selected: Person | Film | Planet | Starship | Vehicle | Specie | undefined;
 }

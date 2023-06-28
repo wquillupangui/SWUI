@@ -1,20 +1,13 @@
 
 import { createSlice } from '@reduxjs/toolkit';
-
-
-
 import { apiCallBegan } from '../api';
 import { API_URL } from '../../types/Const';
 import { EntitiesState } from '../../types/Entities';
 
-
-
 const initialState: EntitiesState = {
   result: undefined,
-  page: 1,
   loading: false,
   error: null,
-  searchTerm: '',
   selected: undefined
 };
 
@@ -43,6 +36,11 @@ const slice = createSlice({
     },
     entityRequestFailed: (entities, action) => {
       entities.loading = false
+    },
+    entitiesClean: (entities) => {
+      entities.loading = false
+      entities.selected = undefined
+      entities.result = undefined
     }
   },
 
@@ -55,10 +53,11 @@ export const {
   entitiesRequestFailed,
   entityReceived,
   entityRequested,
-  entityRequestFailed
+  entityRequestFailed,
+  entitiesClean
 } = slice.actions;
 
-export const fetchEntities = (entity: string, page: number) => {
+export const fetchEntities = (entity: string, page: string) => {
   return apiCallBegan({
     url: `${API_URL}${entity}/?page=${page}`,
     onStart: entitiesRequested.type,
