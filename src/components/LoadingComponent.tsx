@@ -3,7 +3,7 @@ import { CircularProgress } from '@mui/material';
 
 const LoadingComponent: React.FC = () => {
     return (
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '50vh' }}>
             <CircularProgress />
         </div>
     );

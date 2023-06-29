@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 import { fetchEntity } from '../store/reducers/entitySlice';
 import { useLocation } from 'react-router-dom'
 import LoadingComponent from './LoadingComponent';
-import { Typography, Box, List, ListItem, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
+import { Typography, Box, List, ListItem, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Grid } from '@mui/material';
 import { type } from 'os';
 import { incrementPopularItem } from '../store/reducers/popularSlice';
 
@@ -55,19 +55,25 @@ const EntityDetail: React.FC = () => {
   }, [selected]);
 
   return (
-    <Box justifyContent="center" alignItems="center" minHeight="100vh">
-      {!entities.loading && selected && <Typography variant="h3" style={{ textTransform: 'capitalize', padding: '1rem' }}>{'title' in selected ? selected.title : selected.name}</Typography>}
+    <Grid container justifyContent="center" alignItems="center" minHeight="100vh">
+      {!entities.loading && selected && (
+        <Grid item xs={12}>
+          <Typography variant="h3" style={{ textTransform: 'capitalize', padding: '1rem' }}>
+            {'title' in selected ? selected.title : selected.name}
+          </Typography>
+        </Grid>
+      )}
       {entities.loading ? (
         <LoadingComponent />
       ) : (
-        <>
-          <TableContainer component={Paper} style={{ padding: '1rem' }}>
+        <Grid item xs={12} style={{ padding: '1rem' }}>
+          <TableContainer component={Paper}>
             <Table>
               <TableBody>
                 {arrValues.map((value: any, idx: number) => (
                   <TableRow key={idx}>
-                    <TableCell style={{ textTransform: 'capitalize', fontWeight: 'bold' }} >
-                      {value[0].replace(/_/g, ' ')} :
+                    <TableCell style={{ textTransform: 'capitalize', fontWeight: 'bold' }}>
+                      {value[0].replace(/_/g, ' ')}:
                     </TableCell>
                     <TableCell>
                       <ArrayLink key={idx} value={value[1]} name={value[0]} />
@@ -77,9 +83,9 @@ const EntityDetail: React.FC = () => {
               </TableBody>
             </Table>
           </TableContainer>
-        </>
+        </Grid>
       )}
-    </Box>
+    </Grid>
   );
 };
 

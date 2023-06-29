@@ -8,7 +8,7 @@ import { Link, useSearchParams } from 'react-router-dom';
 import { fetchEntities } from '../store/reducers/entitySlice';
 import { useLocation } from 'react-router-dom'
 import LoadingComponent from './LoadingComponent';
-import { Typography, Box, List, ListItem, Button } from '@mui/material';
+import { Typography, Box, List, ListItem, Button, Grid, TextField } from '@mui/material';
 
 const containerStyles = {
   display: 'flex',
@@ -44,36 +44,42 @@ const EntityList: React.FC = () => {
   );
 
   return (
-    <Box style={containerStyles} >
-      <Typography variant="h3" style={{ textTransform: 'capitalize', padding: '2rem' }}>
-        {location.pathname.replaceAll('/', '')}
-      </Typography>
+    <Grid container direction="column" alignItems="center" style={{ minHeight: '100vh' }}>
+      <Grid item>
+        <Typography variant="h3" style={{ textTransform: 'capitalize', padding: '2rem' }}>
+          {location.pathname.replaceAll('/', '')}
+        </Typography>
+      </Grid>
       {entities.loading ? (
         <LoadingComponent />
       ) : (
-        <>
-          <div style={{ padding: '2rem' }}>
-            <input
+        <Grid item container direction="column" alignItems="center" spacing={2}>
+          <Grid item>
+            <TextField
               type="text"
               placeholder="Search by name"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
-          </div>
-          <List style={{ padding: '2rem' }} >
-            {filteredEntities?.map((entity: any, idx: number) => (
-              <ListItem key={idx}>
-                {renderLink('title' in entity ? entity.title : entity.name, `/${entity.url.replace(/^\D+/g, '')}`)}
-              </ListItem>
-            ))}
-          </List>
-          <Box style={containerStyles}>
-            {entities.result?.previous && renderLink('Previous', `?page=${entities.result?.previous.replace(/^\D+/g, '')}`)}
-            {entities.result?.next && renderLink('Next', `?page=${entities.result?.next.replace(/^\D+/g, '')}`)}
-          </Box>
-        </>
+          </Grid>
+          <Grid item>
+            <List>
+              {filteredEntities?.map((entity: any, idx: number) => (
+                <ListItem key={idx}>
+                  {renderLink('title' in entity ? entity.title : entity.name, `/${entity.url.replace(/^\D+/g, '')}`)}
+                </ListItem>
+              ))}
+            </List>
+          </Grid>
+          <Grid item>
+            <Box>
+              {entities.result?.previous && renderLink('Previous', `?page=${entities.result?.previous.replace(/^\D+/g, '')}`)}
+              {entities.result?.next && renderLink('Next', `?page=${entities.result?.next.replace(/^\D+/g, '')}`)}
+            </Box>
+          </Grid>
+        </Grid>
       )}
-    </Box>
+    </Grid>
   );
 };
 

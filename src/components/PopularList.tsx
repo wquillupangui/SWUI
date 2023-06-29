@@ -3,7 +3,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from './App';
-import { Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, Paper } from '@mui/material';
+import { Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, Paper, Grid } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { entitiesClean } from '../store/reducers/entitySlice';
 
@@ -17,42 +17,45 @@ const PopularList: React.FC = () => {
   }, []);
 
   return (
+    <Box justifyContent="center" alignItems="center" minHeight="100vh" padding={2}>
+      <Typography variant="h3" align="center" gutterBottom>
+        Popular
+      </Typography>
 
-    <Box justifyContent="center" alignItems="center" minHeight="100vh">
-      <Typography variant="h3" style={{ textTransform: 'capitalize', padding: '1rem' }}>Popular</Typography>
-
-      <Table>
-        <TableHead>
-          <TableRow >
-            <TableCell style={{ textAlign: 'center' }}>
-              Count
-            </TableCell>
-            <TableCell >
-              Name
-            </TableCell>
-            <TableCell >
-              Type
-            </TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {sortedItems.map((value: any, idx: number) => (
-            <TableRow key={idx}>
-              <TableCell style={{ textAlign: 'center', fontWeight: 'bold' }}>
-                {value.count}
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell align="center">
+                Count
               </TableCell>
-              <TableCell style={{ textTransform: 'capitalize', fontWeight: 'bold' }} >
-                <Link to={`${value.url}`} >
-                  {value.name}
-                </Link>
+              <TableCell>
+                Name
               </TableCell>
-              <TableCell style={{ textTransform: 'capitalize', }} >
-                {value.type}
+              <TableCell>
+                Type
               </TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHead>
+          <TableBody>
+            {sortedItems.map((value: any, idx: number) => (
+              <TableRow key={idx}>
+                <TableCell style={{ textAlign: 'center', fontWeight: 'bold' }}>
+                  {value.count}
+                </TableCell>
+                <TableCell style={{ textTransform: 'capitalize', fontWeight: 'bold' }}>
+                  <Link to={`${value.url}`} >
+                    {value.name}
+                  </Link>
+                </TableCell>
+                <TableCell style={{ textTransform: 'capitalize' }}>
+                  {value.type}
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </Box>
   );
 
