@@ -1,24 +1,19 @@
 
 
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { RootState } from './App';
 import { Link, useSearchParams } from 'react-router-dom';
 
 import { fetchEntities } from '../store/reducers/entitySlice';
 import { useLocation } from 'react-router-dom'
 import LoadingComponent from './LoadingComponent';
-import { Typography, Box, List, ListItem, Button, Grid, TextField } from '@mui/material';
+import { Typography, Box, List, ListItem, Grid, TextField } from '@mui/material';
+import { useAppDispatch } from '../store/hooks';
 
-const containerStyles = {
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  minHeight: '100vh',
-};
 
 const EntityList: React.FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const entities = useSelector((state: RootState) => state.entities);
   const location = useLocation();
   const [searchParams] = useSearchParams();
@@ -29,7 +24,7 @@ const EntityList: React.FC = () => {
   useEffect(() => {
     dispatch(fetchEntities(location.pathname, page));
     setSearchQuery('')
-  }, [location.pathname, page]);
+  }, [location.pathname, page, dispatch]);
 
   const filteredEntities = entities.result?.results.filter((entity: any) =>
     'title' in entity ? entity.title.toLowerCase().includes(searchQuery.toLowerCase()) : entity.name.toLowerCase().includes(searchQuery.toLowerCase())

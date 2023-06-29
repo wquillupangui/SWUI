@@ -2,7 +2,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import reducer from './reducer';
 import api from './middleware/api';
 
-export default function () {
+const store = () => {
 	return configureStore({
 		reducer,
 		middleware: (getDefaultMiddleware) =>
@@ -11,3 +11,5 @@ export default function () {
 			)
 	});
 }
+
+export default store;

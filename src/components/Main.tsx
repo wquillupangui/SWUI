@@ -1,6 +1,4 @@
 import React from 'react';
-import { RootState } from './App';
-import { useSelector } from 'react-redux';
 
 import EntityList from './EntityList';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
@@ -9,7 +7,7 @@ import EntityDetail from './EntityDetail';
 import PopularList from './PopularList';
 
 const Main: React.FC = () => {
-    const entities = useSelector((state: RootState) => state.entities);
+    
 
     return (
         <div className="App">

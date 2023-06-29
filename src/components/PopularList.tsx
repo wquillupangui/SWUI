@@ -1,20 +1,21 @@
 
 
 import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { RootState } from './App';
-import { Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, Paper, Grid } from '@mui/material';
+import { Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, Paper } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { entitiesClean } from '../store/reducers/entitySlice';
+import { useAppDispatch } from '../store/hooks';
 
 const PopularList: React.FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const popularItems = useSelector((state: RootState) => state.popular.popularItems);
 
   const sortedItems = Object.values(popularItems).sort((a, b) => b.count - a.count);
   useEffect(() => {
     dispatch(entitiesClean());
-  }, []);
+  }, [dispatch]);
 
   return (
     <Box justifyContent="center" alignItems="center" minHeight="100vh" padding={2}>

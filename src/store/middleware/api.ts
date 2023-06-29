@@ -1,6 +1,5 @@
 import axios, { AxiosRequestConfig } from 'axios';
 import { Middleware } from 'redux';
-import { RootState } from '../../components/App';
 import * as actions from '../api';
 
 const api: Middleware =
@@ -10,7 +9,7 @@ const api: Middleware =
 				if (action.type !== actions.apiCallBegan.type) return next(action);
 
 				const { url, method, data, onStart, onSuccess, onError } = action.payload;
-				const state = getState() as RootState;
+				
 
 				if (onStart) dispatch({ type: onStart });
 

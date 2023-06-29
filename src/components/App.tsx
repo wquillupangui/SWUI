@@ -1,6 +1,6 @@
 import '../App.css';
 import configureStore from '../store/store';
-import { Provider, useSelector } from 'react-redux';
+import { Provider } from 'react-redux';
 import Main from './Main';
 
 const store = configureStore();

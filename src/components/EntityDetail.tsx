@@ -1,15 +1,16 @@
 
 import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { RootState } from './App';
 import { Link } from 'react-router-dom';
 
 import { fetchEntity } from '../store/reducers/entitySlice';
 import { useLocation } from 'react-router-dom'
 import LoadingComponent from './LoadingComponent';
-import { Typography, Box, List, ListItem, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Grid } from '@mui/material';
-import { type } from 'os';
+import { Typography, Table, TableBody, TableCell, TableContainer, TableRow, Paper, Grid } from '@mui/material';
+
 import { incrementPopularItem } from '../store/reducers/popularSlice';
+import { useAppDispatch } from '../store/hooks';
 
 
 
@@ -33,7 +34,7 @@ const ArrayLink = ({ value, name }: any) => {
 }
 
 const EntityDetail: React.FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const entities = useSelector((state: RootState) => state.entities);
   const { selected } = entities
   const location = useLocation();
@@ -42,7 +43,7 @@ const EntityDetail: React.FC = () => {
 
   useEffect(() => {
     dispatch(fetchEntity(location.pathname));
-  }, [location.pathname]);
+  }, [location.pathname, dispatch]);
 
   useEffect(() => {
     const tempItem = {
@@ -52,7 +53,7 @@ const EntityDetail: React.FC = () => {
       count: 1
     }
     selected && dispatch(incrementPopularItem(tempItem))
-  }, [selected]);
+  }, [location.pathname, selected, dispatch]);
 
   return (
     <Grid container justifyContent="center" alignItems="center" minHeight="100vh">
@@ -70,16 +71,23 @@ const EntityDetail: React.FC = () => {
           <TableContainer component={Paper}>
             <Table>
               <TableBody>
-                {arrValues.map((value: any, idx: number) => (
-                  <TableRow key={idx}>
-                    <TableCell style={{ textTransform: 'capitalize', fontWeight: 'bold' }}>
-                      {value[0].replace(/_/g, ' ')}:
-                    </TableCell>
-                    <TableCell>
-                      <ArrayLink key={idx} value={value[1]} name={value[0]} />
-                    </TableCell>
-                  </TableRow>
-                ))}
+                {arrValues
+                  .filter((value) => {
+                    if (Array.isArray(value[1])) {
+                      return (value[1].length > 0)
+                    }
+                    return true
+                  })
+                  .map((value: any, idx: number) => (
+                    <TableRow key={idx}>
+                      <TableCell style={{ textTransform: 'capitalize', fontWeight: 'bold' }}>
+                        {value[0].replace(/_/g, ' ')}:
+                      </TableCell>
+                      <TableCell>
+                        <ArrayLink key={idx} value={value[1]} name={value[0]} />
+                      </TableCell>
+                    </TableRow>
+                  ))}
               </TableBody>
             </Table>
           </TableContainer>
